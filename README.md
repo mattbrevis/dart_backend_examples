@@ -1,4 +1,4 @@
-<h1>Backend with Dart and Shelf</h1>
+<h1>Create a Web Server with Dart and Shelf</h1>
 
 A server app built using [Shelf](https://pub.dev/packages/shelf),
 configured to enable running with [Docker](https://www.docker.com/).
