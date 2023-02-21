@@ -20,7 +20,7 @@ class ServeHandler {
       return Response.ok('Hello $user');
     });
     
-    //test in your brownser http://localhost:33/testqueryparam?name=matt&email=teste@mail.com
+    //test in your brownser http://localhost:33/testqueryparam?name=example&email=teste@mail.com
     router.get('/testqueryparam', (Request req){
       String? name = req.url.queryParameters['name'];
       String? email = req.url.queryParameters['email'];

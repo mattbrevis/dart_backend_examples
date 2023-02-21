@@ -1,4 +1,4 @@
-name: dart_api_mysql
+name: dart_api_example
 description: A server app using the shelf package and Docker.
 version: 1.0.0
 

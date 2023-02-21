@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "dart_api_mysql",
+            "name": "dart_api_example",
             "request": "launch",
             "type": "dart"
         }
