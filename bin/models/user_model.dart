@@ -1,19 +1,24 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class UserModel {
   int? id;
   String? nickname;
   String? email;
+  String? password;
   UserModel({
     this.id,
     this.nickname,
     this.email,
+    this.password
   });
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{      
+    return <String, dynamic>{
+      'id': id,
       'nickname': nickname,
       'email': email,
+      'password': password,
     };
   }
 
@@ -21,7 +26,8 @@ class UserModel {
     return UserModel(
       id: map['id'],
       nickname: map['nickname'],
-      email: map['email'],
+      email: map['email'] ,
+      password: map['password'],
     );
   }
 

@@ -4,7 +4,7 @@ import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import '../../utils/custom_env.dart';
 import 'authentication_service.dart';
 
-class AuthenticationInterface extends AuthenticationService{
+class AuthenticationInterface extends AuthenticationService<JWT>{
   @override
   Future<String> generateJWT(String userId) async{
     String key = await CustomEnv.get(key: 'jwtkey');
@@ -22,7 +22,7 @@ class AuthenticationInterface extends AuthenticationService{
   }
 
   @override
-  validateJWT(String jwt) {
+  JWT? validateJWT(String jwt) {
     // TODO: implement validateJWT
     throw UnimplementedError();
   }

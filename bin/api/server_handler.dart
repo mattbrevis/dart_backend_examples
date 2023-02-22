@@ -8,7 +8,6 @@ class ServeHandler {
    
   static Handler get handler{
     final router = Router();
-    final header = {'content-type' : 'application/json'};
 
     router.get('/',(Request request){
       return Response(200, body: 'Teste');
@@ -33,7 +32,7 @@ class ServeHandler {
     router.put('/update/user',(Request req)async {
       var result = await req.readAsString();
       Map bodyParam = jsonDecode(result);       
-      return Response.ok(jsonEncode(bodyParam), headers: header);
+      return Response.ok(jsonEncode(bodyParam));
     });
     
     router.post('/create/user',(Request req)async {
@@ -48,7 +47,7 @@ class ServeHandler {
         return Response.forbidden('Email invalid');
       }
 
-      return Response.ok(jsonEncode(bodyParam), headers: header);
+      return Response.ok(jsonEncode(bodyParam));
     });
 
 
