@@ -1,9 +1,7 @@
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 
-class MyServer {
-  MyServer._();
-  factory MyServer()=>MyServer._();
+class MyServer {  
   static Future<void> initialize(
       {required Handler handler,
       required String address,

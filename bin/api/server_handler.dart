@@ -5,9 +5,7 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
 class ServeHandler {
-  ServeHandler._();
-  factory ServeHandler()=> ServeHandler._();  
-  
+   
   static Handler get handler{
     final router = Router();
     final header = {'content-type' : 'application/json'};
@@ -25,6 +23,17 @@ class ServeHandler {
       String? name = req.url.queryParameters['name'];
       String? email = req.url.queryParameters['email'];
       return Response.ok('Your name: $name \nYour email: $email');
+    });
+
+    router.delete('/delete/user', (Request req){
+      String? id = req.url.queryParameters['id'];      
+      return Response.ok('User deleted $id');
+    });
+
+    router.put('/update/user',(Request req)async {
+      var result = await req.readAsString();
+      Map bodyParam = jsonDecode(result);       
+      return Response.ok(jsonEncode(bodyParam), headers: header);
     });
     
     router.post('/create/user',(Request req)async {

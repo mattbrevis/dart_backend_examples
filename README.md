@@ -11,6 +11,15 @@ This project doesn't have any connection to database. I've created this reposito
 
 In my tests, I've put the port 33, you can change the port in the '.env' file.
 
+
+<h1>SCRIPT SQL TABLE Users </h1>
+CREATE TABLE `user` (
+  `iduser` int NOT NULL AUTO_INCREMENT,
+  `nickname` varchar(45) NOT NULL,
+  `email` varchar(45) NOT NULL,
+  PRIMARY KEY (`iduser`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 ## Running with Docker
 
 If you have [Docker Desktop](https://www.docker.com/get-started) installed, you
