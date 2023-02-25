@@ -1,57 +1,51 @@
-
 import 'dart:convert';
 
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-class ServeHandler {
-   
-  static Handler get handler{
+class ExampleApi {
+  static const String routeHome = '/home';
+  static Handler get handler {
     final router = Router();
 
-    router.get('/',(Request request){
-      return Response(200, body: 'Teste');
+    router.get(routeHome, (Request request) {
+      return Response(200, body: 'Welcome!');
     });
 
-    router.get('/hello/<usuario>', (Request req, String user){
+    router.get('$routeHome/<usuario>', (Request req, String user) {
       return Response.ok('Hello $user');
     });
-    
+
     //test in your brownser http://localhost:33/testqueryparam?name=example&email=teste@mail.com
-    router.get('/testqueryparam', (Request req){
+    router.get('$routeHome/testqueryparam', (Request req) {
       String? name = req.url.queryParameters['name'];
       String? email = req.url.queryParameters['email'];
       return Response.ok('Your name: $name \nYour email: $email');
     });
 
-    router.delete('/delete/user', (Request req){
-      String? id = req.url.queryParameters['id'];      
-      return Response.ok('User deleted $id');
+    router.delete('$routeHome/delete', (Request req) {
+      String? id = req.url.queryParameters['id'];
+      return Response.ok('Test deleted $id');
     });
 
-    router.put('/update/user',(Request req)async {
+    router.put('$routeHome/update', (Request req) async {
       var result = await req.readAsString();
-      Map bodyParam = jsonDecode(result);       
+      Map bodyParam = jsonDecode(result);
       return Response.ok(jsonEncode(bodyParam));
     });
-    
-    router.post('/create/user',(Request req)async {
+
+    router.post('$routeHome/create', (Request req) async {
       var result = await req.readAsString();
       Map bodyParam = jsonDecode(result);
       String name = bodyParam['name'];
-      String email =bodyParam['email'];
-
-      if(name.isEmpty){
+      String email = bodyParam['email'];
+      if (name.isEmpty) {
         return Response.forbidden('Name invalid');
-      }else if(email.isEmpty){
+      } else if (email.isEmpty) {
         return Response.forbidden('Email invalid');
       }
-
       return Response.ok(jsonEncode(bodyParam));
     });
-
-
     return router;
   }
-  
 }

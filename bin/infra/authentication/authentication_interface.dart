@@ -20,9 +20,23 @@ class AuthenticationInterface implements AuthenticationService<JWT>{
   }
 
   @override
-  JWT? validateJWT(String jwt) {
-    // TODO: implement validateJWT
-    throw UnimplementedError();
+  Future<JWT?>? validateJWT(String jwtToken) async{
+    
+    String key = await CustomEnv.get(key: 'jwt_key');
+
+    try {
+      return JWT.verify(jwtToken, SecretKey(key));
+    } on JWTInvalidError {
+      return null;
+    } on JWTExpiredError {
+      return null;
+    } on JWTNotActiveError {
+      return null;
+    } on JWTUndefinedError {
+      return null;
+    } catch (e) {
+      return null;
+    }
   }
   
 }
