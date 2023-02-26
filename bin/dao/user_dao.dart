@@ -3,6 +3,8 @@ import '../models/user_model.dart';
 import 'dao.dart';
 
 class UserDao extends DAO<UserModel> {
+
+  
   static const String userTable = 'users';
   final DatabaseConfig _dbConfiguration;
   UserDao(this._dbConfiguration);

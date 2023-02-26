@@ -1,7 +1,6 @@
 import 'package:shelf/shelf.dart';
 
 import 'api/login_api.dart';
-
 import 'infra/authentication/authentication_interface.dart';
 import 'infra/middleware_interception.dart';
 import 'infra/my_server.dart';
@@ -10,8 +9,8 @@ import 'utils/custom_env.dart';
 
 void main() async {
   var cascadeHandler = Cascade()
-      .add(LoginApi(AuthenticationInterface()).handler)
-      .add(ExampleApi.handler)
+      .add(LoginApi(AuthenticationInterface()).getHandler())
+      .add(ExampleApi().getHandler())            
       .handler;
   var handler = Pipeline()
       .addMiddleware(logRequests())

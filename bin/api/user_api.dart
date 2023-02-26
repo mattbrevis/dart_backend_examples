@@ -10,12 +10,12 @@ class UserApi {
   UserApi(this._userService);
   static const String routeUser = '/user';
 
-  Future<bool> createUser(user) async => await _userService.create(user);
-  Future<bool> delete(int id) async => await _userService.delete(id);
-  Future<bool> update(UserModel userModel) async =>
+   Future<bool> createUser(user) async => await _userService.create(user);
+   Future<bool> delete(int id) async => await _userService.delete(id);
+   Future<bool> update(UserModel userModel) async =>
       await _userService.update(userModel);
-  Future<List<UserModel>> findAll() => _userService.findAll();
-  Handler get handler {
+   Future<List<UserModel>> findAll() => _userService.findAll();
+   Handler get handler {
     final router = Router();
     router.get(routeUser, (Request request) async {
       final listUsers = await findAll();

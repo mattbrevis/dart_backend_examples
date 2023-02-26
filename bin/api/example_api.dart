@@ -3,9 +3,15 @@ import 'dart:convert';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-class ExampleApi {
-  static const String routeHome = '/home';
-  static Handler get handler {
+import 'custom_api.dart';
+
+class ExampleApi implements CustomApi{
+  static final ExampleApi _instance = ExampleApi._internal();   
+  static ExampleApi _internal() => _instance;
+  static const String routeHome = '/home';  
+
+  @override
+  Handler getHandler({List<Middleware>? middlewares}) {
     final router = Router();
 
     router.get(routeHome, (Request request) {
@@ -48,4 +54,8 @@ class ExampleApi {
     });
     return router;
   }
+
+  
+
+  
 }
