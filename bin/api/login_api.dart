@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 import '../infra/authentication/authentication_interface.dart';
@@ -11,8 +13,9 @@ class LoginApi implements CustomApi{
   @override
   Handler getHandler({List<Middleware>? middlewares}) {
     final router = Router();
-    router.post(routeLogin, (Request request) async{            
-      return  Response.ok(await _authenticationService.generateJWT('1'));
+    router.post(routeLogin, (Request request) async{   
+      Map<String, String> res = {'token' : await _authenticationService.generateJWT('1')};         
+      return  Response.ok(jsonEncode(res));
     });
     return router;
   }
