@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "dart_api_example",
+            "name": "dart_api_examples",
             "request": "launch",
             "type": "dart"
         }

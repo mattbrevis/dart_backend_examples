@@ -1,5 +1,5 @@
-name: dart_api_example
-description: A server app using the shelf package and Docker.
+name: dart_api_examples
+description: Create a web server with dart and shelf.
 version: 1.0.0
 
 environment:

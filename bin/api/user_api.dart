@@ -1,5 +1,6 @@
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
+import 'dart:convert';
 
 import '../models/user_model.dart';
 import '../services/user_service.dart';
@@ -10,30 +11,50 @@ class UserApi {
   static const String routeUser = '/user';
 
   Future<bool> createUser(user) async => await _userService.create(user);
-
+  Future<bool> delete(int id) async => await _userService.delete(id);
+  Future<bool> update(UserModel userModel) async =>
+      await _userService.update(userModel);
+  Future<List<UserModel>> findAll() => _userService.findAll();
   Handler get handler {
     final router = Router();
-    router.post(routeUser, (Request req) async {
+    router.get(routeUser, (Request request) async {
+      final listUsers = await findAll();
+      String res = jsonEncode(listUsers);
+      return Response(200, body: res);
+    });
+
+    router.post('$routeUser/create', (Request req) async {
       var body = await req.readAsString();
       if (body.isEmpty) return Response(400);
       var user = UserModel.fromJson(body);
       var result = await createUser(user);
-      return result ? Response(201) : Response(500);
+      return result ? Response.ok('User created!') : Response(500);
     });
-    router.delete('$routeUser/delete', (Request req) {
-      //TODO: DELETE USER WITH MYSQL
-      return Response.badRequest();
+
+    router.delete('$routeUser/delete', (Request req) async {
+      var result = await req.readAsString();
+      Map bodyParam = jsonDecode(result);
+      int id = bodyParam['id'] ?? 0;
+      if (id > 0) {
+        var res = await delete(id);
+        if (res == true) {
+          return Response.ok('User deleted!');
+        } else {
+          return Response.notFound('User not found!');
+        }
+      } else {
+        return Response.notFound('User not found!');
+      }
     });
 
     router.put('$routeUser/update', (Request req) async {
-      //TODO: UPDATE USER WITH MYSQL
-      return Response.badRequest();
+      var body = await req.readAsString();
+      if (body.isEmpty) return Response(400);
+      var user = UserModel.fromJson(body);
+      var result = await update(user);
+      return result ? Response.ok('User updated') : Response.badRequest();
     });
 
-    router.post('$routeUser/create', (Request req) async {
-      //TODO: CREATE USER WITH MYSQL
-      return Response.badRequest();
-    });
     return router;
   }
 }
