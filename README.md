@@ -13,6 +13,4 @@ I've created three examples, they're in the path 'api', each class has with diff
  - The ExampleApi class doesn't have any connection with database or security authentication.
  This class has all the methods : GET, PUT, DELETE, POST.
  - The LoginApi class has a POST method that retrieve an JWT token.
- - The UserApi class will have all the methods with database connection with MySQL. SQL codes are in 'dart_api_example.sql' in the root path.
-
-
+ - The UserApi class have all the methods GET, PUT, DELETE, POST with connection to a database MySQL. SQL codes are in 'dart_api_example.sql' in the root path. 
