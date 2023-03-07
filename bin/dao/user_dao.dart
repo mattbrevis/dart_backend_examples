@@ -28,7 +28,8 @@ class UserDao extends DAO<UserModel> {
   @override
   Future<List<UserModel>> findAll() async {
     var result = await _dbConfiguration.execQuery('SELECT * FROM $userTable');
-    return result.map((r) => UserModel.fromMap(r.fields)).toList();
+    print(result);
+    return result.map((r) => UserModel.fromMap(r.fields)).toList().cast<UserModel>();
   }
 
   @override

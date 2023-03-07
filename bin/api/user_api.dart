@@ -1,7 +1,6 @@
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 import 'dart:convert';
-
 import '../models/user_model.dart';
 import '../services/user_service.dart';
 
@@ -9,17 +8,11 @@ class UserApi {
   final UserService _userService;
   UserApi(this._userService);
   static const String routeUser = '/user';
-
-   Future<bool> createUser(user) async => await _userService.create(user);
-   Future<bool> delete(int id) async => await _userService.delete(id);
-   Future<bool> update(UserModel userModel) async =>
-      await _userService.update(userModel);
-   Future<List<UserModel>> findAll() => _userService.findAll();
-   Handler get handler {
+  Handler get handler {
     final router = Router();
     router.get(routeUser, (Request request) async {
-      final listUsers = await findAll();
-      String res = jsonEncode(listUsers);
+      var result = await _userService.findAll();      
+      var res = json.encode(result);      
       return Response(200, body: res);
     });
 
@@ -27,7 +20,7 @@ class UserApi {
       var body = await req.readAsString();
       if (body.isEmpty) return Response(400);
       var user = UserModel.fromJson(body);
-      var result = await createUser(user);
+      var result = await _userService.create(user);
       return result ? Response.ok('User created!') : Response(500);
     });
 
@@ -36,7 +29,7 @@ class UserApi {
       Map bodyParam = jsonDecode(result);
       int id = bodyParam['id'] ?? 0;
       if (id > 0) {
-        var res = await delete(id);
+        var res = await _userService.delete(id);
         if (res == true) {
           return Response.ok('User deleted!');
         } else {
@@ -51,10 +44,14 @@ class UserApi {
       var body = await req.readAsString();
       if (body.isEmpty) return Response(400);
       var user = UserModel.fromJson(body);
-      var result = await update(user);
+      var result = await _userService.update(user);
       return result ? Response.ok('User updated') : Response.badRequest();
     });
 
     return router;
   }
+
+
+
+  
 }
