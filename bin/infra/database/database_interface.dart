@@ -8,7 +8,7 @@ class DatabaseInterface implements DatabaseConfig {
 
   @override  
   Future<MySqlConnection> get connection async {
-    if (_connection == null)  await createConnection();
+    _connection ??= await createConnection();
     return _connection!;
   }
 
@@ -16,12 +16,14 @@ class DatabaseInterface implements DatabaseConfig {
   Future createConnection() async =>
       await MySqlConnection.connect(
         ConnectionSettings(
+          useSSL: false,
           host: await CustomEnv.get<String>(key: 'db_host'),
           port: await CustomEnv.get<int>(key: 'db_port'),
           user: await CustomEnv.get<String>(key: 'db_user'),
           password: await CustomEnv.get<String>(key: 'db_password'),
           db: await CustomEnv.get<String>(key: 'db_schema'),
         ),
+        
       );
 
   @override

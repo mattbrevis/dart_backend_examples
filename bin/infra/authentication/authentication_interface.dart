@@ -1,29 +1,27 @@
-
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:shelf/shelf.dart';
 
 import '../../utils/custom_env.dart';
 import 'authentication_service.dart';
 
-class AuthenticationInterface implements AuthenticationService<JWT>{
+class AuthenticationInterface implements AuthenticationService<JWT> {
   @override
-  Future<String> generateJWT(String userId) async{
+  Future<String> generateJWT(String userId) async {
     String key = await CustomEnv.get(key: 'jwt_key');
 
     var jwt = JWT({
-     'iat' : DateTime.now().millisecondsSinceEpoch,
-     'userId': userId,
-     'roles': ['admin', 'user']
+      'iat': DateTime.now().millisecondsSinceEpoch,
+      'userId': userId,
+      'roles': ['admin', 'user']
     });
 
     String token = jwt.sign(SecretKey(key));
-    return token;    
+    return token;
   }
 
   @override
-  Future<JWT?>? validateJWT(String jwtToken) async{
-    
+  Future<JWT?>? validateJWT(String jwtToken) async {
     String key = await CustomEnv.get(key: 'jwt_key');
-
     try {
       return JWT.verify(jwtToken, SecretKey(key));
     } on JWTInvalidError {
@@ -38,5 +36,32 @@ class AuthenticationInterface implements AuthenticationService<JWT>{
       return null;
     }
   }
-  
+
+  @override
+  Middleware get authorization {
+    return (Handler handler) {
+      return (Request req) async {
+        String? authorizationHeader = req.headers['Authorization'];
+        JWT? jwt;
+        if (authorizationHeader != null) {
+          if (authorizationHeader.startsWith('Bearer ')) {
+            String token = authorizationHeader.substring(7);
+            jwt = await validateJWT(token);
+          }
+        }
+        var request = req.change(context: {'jwt': jwt});
+        return handler(request);
+      };
+    };
+  }
+
+  @override
+  Middleware get verifyJwt => createMiddleware(
+        requestHandler: (Request req) {
+          if (req.context['jwt'] == null) {
+            return Response.forbidden('Not Authorized');
+          }
+          return null;
+        },
+      );
 }

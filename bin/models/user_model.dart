@@ -31,6 +31,8 @@ class UserModel {
     );
   }
 
+  static List<UserModel> listFromMap(List<dynamic> list) => list.map((e) => UserModel.fromMap(e)).toList();
+
   String toJson() => json.encode(toMap());
 
   factory UserModel.fromJson(String source) => UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
